@@ -21,11 +21,10 @@ using namespace std;
 template <typename ABQType>
 class ABQ
 {
-    //Declare scale factor global
-    float scaleFactor = 2.0f;
-
+   
     //Declare private variables
     private:
+        float scaleFactor = 2.0f;
         ABQType *queueArray = nullptr;
         int currentSize = 0;
         int queueIndex = 0;
@@ -34,7 +33,7 @@ class ABQ
     //Declare public class methods
     public:
         ABQ();
-        ABQ(int capacity);
+        ABQ(int capacity, float scale);
         ABQ(const ABQ &rhs);
         ABQ& operator=(const ABQ &rhs);
         ~ABQ();
@@ -52,15 +51,17 @@ template <typename ABQType>
 ABQ<ABQType>::ABQ()
 {
     currentSize = 0;
+    scaleFactor = 2.0f;
     maximumCapacity = 1;
     queueArray = new ABQType[maximumCapacity];
 }
 
 //overloaded constructor
 template <typename ABQType>
-ABQ<ABQType>::ABQ(int capacity)
+ABQ<ABQType>::ABQ(int capacity, float scale)
 {
     currentSize = 0;
+    scaleFactor = scale;
     maximumCapacity = capacity;
     queueArray = new ABQType[maximumCapacity];
 }
@@ -112,7 +113,7 @@ void ABQ<ABQType>::enqueue(ABQType data)
     if(this->getSize() == this->getMaxCapacity())
     {
         //allocates new space for temp queue increased by scale factor
-        ABQType* tempQueue = new ABQType[this->getSize() * static_cast<int>(scaleFactor)];
+        ABQType* tempQueue = new ABQType[static_cast<int>(this->getSize() * this->scaleFactor)];
         //performs one by one deep copy
         for(int i = 0; i < this->getSize(); ++i)
         {
@@ -121,7 +122,7 @@ void ABQ<ABQType>::enqueue(ABQType data)
         //adds last value into new array
         tempQueue[this->getSize()] = data;
         //increases maximum capacity 
-        this->maximumCapacity *= scaleFactor;
+        this->maximumCapacity *= this->scaleFactor;
         //deletes memory allocated for the queue array
         delete[] this->queueArray;
         //assigns queueArray pointer to the temp queue

@@ -14,6 +14,7 @@ bottom. Items are then popped off from the top.
 
 #include <iostream>
 #include <string>
+#include <algorithm>
 
 using namespace std;
 
@@ -21,19 +22,18 @@ using namespace std;
 template <typename ABSType>
 class ABS
 {
-    //Declare scale factor global
-    float scaleFactor = 2.0f;
 
     //Declare private variables
     private:
+        float scaleFactor = 2.0f;
         ABSType *stackArray = nullptr;
         int currentSize = 0;
-        int maximumCapacity = 1;
+        int maximumCapacity = 2;
 
     //Declare public class methods
     public:
         ABS();
-        ABS(int capacity);
+        ABS(int capacity, float scale);
         ABS(const ABS &rhs);
         ABS& operator=(const ABS &rhs);
         ~ABS();
@@ -51,15 +51,17 @@ template <typename ABSType>
 ABS<ABSType>::ABS()
 {
     currentSize = 0;
+    scaleFactor = 2.0f;
     maximumCapacity = 1;
     stackArray = new ABSType[maximumCapacity];
 }
 
 //overloaded constructor
 template <typename ABSType>
-ABS<ABSType>::ABS(int capacity)
+ABS<ABSType>::ABS(int capacity, float scale)
 {
     currentSize = 0;
+    scaleFactor = scale;
     maximumCapacity = capacity;
     stackArray = new ABSType[maximumCapacity];
 }
@@ -111,16 +113,19 @@ void ABS<ABSType>::push(ABSType data)
     if(this->getSize() == this->getMaxCapacity())
     {
         //allocates new space for temp stack increased by scale factor
-        ABSType* tempStack = new ABSType[this->getSize() * static_cast<int>(scaleFactor)];
+        ABSType* tempStack = new ABSType[static_cast<int>(this->getSize() * this->scaleFactor)];
+       
         //performs one by one deep copy
         for(int i = 0; i < this->getSize(); ++i)
         {
             tempStack[i] = this->stackArray[i];
         }
+
         //adds last value into new array
         tempStack[this->getSize()] = data;
+
         //increases maximum capacity 
-        this->maximumCapacity *= scaleFactor;
+        this->maximumCapacity *= this->scaleFactor;
         //deletes memory allocated for the stack array
         delete[] this->stackArray;
         //assigns stackArray pointer to the temp stack
@@ -161,7 +166,7 @@ ABSType ABS<ABSType>::pop()
             tempStack[i] = this->stackArray[i];
         }
         //readjusts maximum size by scale factor
-        this->maximumCapacity = this->maximumCapacity/scaleFactor;
+        this->maximumCapacity = this->maximumCapacity/this->scaleFactor;
         //deallocates original array
         delete[] this->stackArray;
         //assigns original array to temp stack
