@@ -328,7 +328,7 @@ const typename LinkedList<LLType>::Node* LinkedList<LLType>::Find(const LLType& 
 
 /*adds pointers to nodes with passed in parameter value to vector of node pointers*/
 template<typename LLType>
-void LinkedList<LLType>::FindAll(vector<typename LinkedList<LLType>::Node*>& outData, const LLType& value) const
+void LinkedList<LLType>::FindAll(vector<Node*>& outData, const LLType& value) const
 {
     Node* currentNode = this->head;
     while(currentNode != nullptr)

@@ -16,17 +16,7 @@ int main()
     firstList.AddHead(25);
     firstList.AddHead(5);
     firstList.FindAll(vectorTest, 25);
-    LinkedList<int> secondList = firstList;
-    firstList.PrintForward();
-    cout << "break" << endl;
-    secondList.PrintForward();
-    LinkedList<int> thirdList;
-    thirdList.AddHead(3);
-    thirdList.PrintForward();
-    secondList = thirdList;
-    secondList.PrintForward();
-    thirdList = firstList;
-    thirdList.PrintForward();
+    cout << vectorTest.size() << endl;
 
     
 
