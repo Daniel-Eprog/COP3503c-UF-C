@@ -14,11 +14,11 @@ int main()
     vector<double> setPrice;
 
 	cout << std::fixed << setprecision(2);
-	cout << "Which file(s) to open?\n";
-	cout << "1. lego1.csv" << endl;
-	cout << "2. lego2.csv" << endl;
-	cout << "3. lego3.csv" << endl;
-	cout << "4. All 3 files" << endl;
+	// cout << "Which file(s) to open?\n";
+	// cout << "1. lego1.csv" << endl;
+	// cout << "2. lego2.csv" << endl;
+	// cout << "3. lego3.csv" << endl;
+	// cout << "4. All 3 files" << endl;
 	int option;
 	cin >> option;
 
@@ -220,21 +220,21 @@ int main()
     
    }
  
-    cout << "1. Most Expensive set" << endl;
-	cout << "2. Largest piece count" << endl;
-	cout << "3. Search for set name containing..." << endl;
-	cout << "4. Search themes..." << endl;
-	cout << "5. Part count information" << endl;
-	cout << "6. Price information" << endl;
-	cout << "7. Minifigure information" << endl;
-	cout << "8. If you bought one of everything..." << endl;
-	cout << "0. Exit" << endl;
+    // cout << "1. Most Expensive set" << endl;
+	// cout << "2. Largest piece count" << endl;
+	// cout << "3. Search for set name containing..." << endl;
+	// cout << "4. Search themes..." << endl;
+	// cout << "5. Part count information" << endl;
+	// cout << "6. Price information" << endl;
+	// cout << "7. Minifigure information" << endl;
+	// cout << "8. If you bought one of everything..." << endl;
+	// cout << "0. Exit" << endl;
    
 	int choice;
 	cin >> choice;
     cin.get();  // Clear newline character for any later input
    
-   cout << "Total number of sets: " << setName.size() << endl;
+   cout << "Total number of sets: " << setName.size() << endl << endl;
    if(choice == 1)
    {
         int positionCounter = 0;
@@ -265,7 +265,7 @@ int main()
             }
         }
 
-        cout << "The set with the largest parts count:" << endl;
+        cout << "The set with the highest parts count:" << endl;
         cout << "Name: " << setName.at(positionCounter) << endl;
         cout << "Number: " << setNumber.at(positionCounter) << endl;
         cout << "Theme: " << setTheme.at(positionCounter) << endl;
@@ -276,7 +276,7 @@ int main()
    else if(choice == 3)
    {
      string searchTerm;
-     cin >> searchTerm;
+     getline(cin, searchTerm);
      vector<int> foundPosition;
 
      for(size_t i = 0; i < setName.size(); i++)
@@ -289,10 +289,11 @@ int main()
 
      if(foundPosition.size() <= 0)
      {
-        cout << "No sets matching that search term" << endl;
+        cout << "No sets found matching that search term" << endl;
      }
      else
      {
+        cout << "Sets matching \"" << searchTerm << "\":" << endl;
         for(size_t i = 0; i<foundPosition.size(); i++)
         {
             cout << setNumber.at(foundPosition.at(i)) << " ";
@@ -306,9 +307,9 @@ int main()
    else if(choice == 4) 
    {
      string searchTerm;
-     cin >> searchTerm;
+     getline(cin, searchTerm);
      vector<int> foundPosition;
-
+     
      for(size_t i = 0; i < setTheme.size(); i++)
      {
         if(setTheme.at(i).find(searchTerm) != string::npos)
@@ -319,10 +320,11 @@ int main()
 
      if(foundPosition.size() <= 0)
      {
-        cout << "No sets matching that search term" << endl;
+        cout << "No sets found matching that search term" << endl;
      }
      else
      {
+        cout << "Sets matching \"" << searchTerm << "\":" << endl;
         for(size_t i = 0; i<foundPosition.size(); i++)
         {
             cout << setNumber.at(foundPosition.at(i)) << " ";
@@ -363,22 +365,21 @@ int main()
         }
     }
 
-    cout << "Average price information for " << setPrice.size() << " sets: $" << totalPrice/setPrice.size() << endl;
-    cout << "Set with minimum price: " << endl;
+    cout << "Average price for " << setPrice.size() << " sets: $" << totalPrice/setPrice.size() << endl << endl;
+    cout << "Least expensive set:" << endl;
     cout << "Name: " << setName.at(minPos) << endl;
     cout << "Number: " << setNumber.at(minPos) << endl;
     cout << "Theme: " << setTheme.at(minPos) << endl;
     cout << "Price: $" << setPrice.at(minPos) << endl;
     cout << "Minifigures: " << setMinis.at(minPos) << endl;
-    cout << "Piece count: " << numPieces.at(minPos) << endl;
-    cout << "Set with maximum price: " << endl;
+    cout << "Piece count: " << numPieces.at(minPos) << endl << endl;
+    cout << "Most expensive set:" << endl;
     cout << "Name: " << setName.at(maxPos) << endl;
     cout << "Number: " << setNumber.at(maxPos) << endl;
     cout << "Theme: " << setTheme.at(maxPos) << endl;
     cout << "Price: $" << setPrice.at(maxPos) << endl;
     cout << "Minifigures: " << setMinis.at(maxPos) << endl;
     cout << "Piece count: " << numPieces.at(maxPos) << endl;
-
 
    }
    else if(choice == 7)
@@ -392,7 +393,6 @@ int main()
         {
             maxPos = i;
         }
-
     }
 
     cout << "Average number of minifigures:  " << totalFigs/setMinis.size() << endl;
@@ -407,7 +407,26 @@ int main()
    }
    else if(choice == 8)
    {
+    double totalPrice = 0;
+    int totalPieces = 0;
+    int totalMinis = 0;
 
+     for(size_t i = 0; i < setMinis.size(); i++)
+     {
+        totalMinis += setMinis.at(i);
+        totalPrice += setPrice.at(i);
+        totalPieces += numPieces.at(i);
+
+     }
+
+     cout << "If you bought one of everything..." << endl;
+     cout << "It would cost: $" << totalPrice << endl;
+     cout << "You would have " << totalPieces << " pieces in your collection" << endl;
+     cout << "You would have an army of " << totalMinis << " minifigures!" << endl;
+   }
+   else if(choice == 0)
+   {
+      return 0;
    }
 
 
