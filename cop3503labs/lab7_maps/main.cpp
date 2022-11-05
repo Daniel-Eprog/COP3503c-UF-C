@@ -10,11 +10,11 @@ mt19937 random_mt;
 
 struct State
 {
-    int incomePerCapita = 0;
-    int population = 0;
-    int houseIncome = 0;
-    int numHouses = 0;
-    State(int capIncome, int pop, int homeIncome, int numberHouses)
+    string incomePerCapita;
+    string population;
+    string houseIncome;
+    string numHouses;
+    State(string capIncome, string pop, string homeIncome, string numberHouses)
     : incomePerCapita{capIncome}, population{pop}, houseIncome{homeIncome}, numHouses{numberHouses} { }
 
 };
@@ -83,14 +83,11 @@ int main()
 	else if (option == 2)
 	{
 
-    State florida = State(1, 2, 3, 4);
-    cout << florida.population << endl;
-
     string stateName;
-    int cap;
-    int pop;
-    int home;
-    int house;
+    string cap;
+    string pop;
+    string home;
+    string house;
     map<string, State> stateStats;
     ifstream fileToOpen;
 
@@ -112,7 +109,7 @@ int main()
                 getline(fileToOpen, home, ',');
                 getline(fileToOpen, house);
 
-                stateStats.emplace(stateName, State(stoi(cap), stoi(pop), stoi(home), stoi(house)));
+                stateStats.emplace(stateName, State(cap, pop, home, house));
               
             }
 
