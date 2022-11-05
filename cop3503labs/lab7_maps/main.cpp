@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 #include <map>
 #include <iomanip>
 #include <fstream>
@@ -16,6 +17,13 @@ struct State
     string numHouses;
     State(string capIncome, string pop, string homeIncome, string numberHouses)
     : incomePerCapita{capIncome}, population{pop}, houseIncome{homeIncome}, numHouses{numberHouses} { }
+    void Print() 
+    {
+        cout << "Population: " << this->population << endl;
+        cout << "Per Capita Income: " << this->incomePerCapita << endl;
+        cout << "Median Household Income: " << this->houseIncome << endl;
+        cout << "Number of Households: " << this->numHouses << endl;
+    }
 
 };
 
@@ -50,15 +58,16 @@ int main()
 
         map<int, int> diceRoll;
 
-        for(size_t i = 1; i <= numberSides; i++)
+        for(int i = 1; i <= numberSides; i++)
         {
             diceRoll.emplace(i, 0);
         }
 
         int currentRoll = 0;
 
-        for(size_t i = 0; i < numberRolls; i++)
+        for(int i = 0; i < numberRolls; i++)
         {
+            
             currentRoll = Random(1, numberSides);
             for(auto &dicePair : diceRoll)
             {
@@ -91,34 +100,67 @@ int main()
     map<string, State> stateStats;
     ifstream fileToOpen;
 
-    fileToOpen.open("statedata.csv");
-        if(!fileToOpen.is_open())
-        {
-                cout << "sorry file could not be opened" << endl;
-        }
-        else
-        {
-            string discard;
-            getline(fileToOpen, discard);
-            while(!fileToOpen.eof())
-            {
+    fileToOpen.open("states.csv");
+    if(!fileToOpen.is_open())
+    {
+        cout << "sorry file could not be opened" << endl;
+    }
+    else
+    {
 
-                getline(fileToOpen, stateName, ',');
-                getline(fileToOpen, cap, ',');
-                getline(fileToOpen, pop, ',');
-                getline(fileToOpen, home, ',');
-                getline(fileToOpen, house);
+        string discard;
+        getline(fileToOpen, discard);
+        while(!fileToOpen.eof())
+        {
 
-                stateStats.emplace(stateName, State(cap, pop, home, house));
+            getline(fileToOpen, stateName, ',');
+            getline(fileToOpen, cap, ',');
+            getline(fileToOpen, pop, ',');
+            getline(fileToOpen, home, ',');
+            getline(fileToOpen, house);
+
+            stateStats.emplace(stateName, State(cap, pop, home, house));
               
+        }
+        
+        cout << "1. Print all states" << endl;
+        cout << "2. Search for a state" << endl;
+        cin >> option;
+
+        if(option == 1)
+        {
+            map<string, State>::iterator iter;
+            for(auto iter = stateStats.begin(); iter != stateStats.end(); iter++)
+            {   
+                if(iter == stateStats.begin())
+                {
+                    continue;
+                }
+                else
+                {
+                cout << iter->first << endl;
+                iter->second.Print();
+                }
             }
+        }
+        else if(option == 2)
+        {
+            string searchState;
+            getline(cin, searchState);//take in user input
+            
+            map<string, State>::iterator iter;
+            iter = stateStats.find(searchState);
 
-      
-
-	   // Load the states
-	   
-	   // Get input for option 1 (show all states) or 2 (do a search for a particular state)
-
+            if(iter != stateStats.end())
+            {
+                cout << searchState << endl;
+                iter->second.Print();
+            }
+            else
+            {
+                cout << "No match found for " << searchState << endl;
+            }
+        }
      }
     }
 
